@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background: #00C7C7;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: #fafafa;
+            animation: pulse 3s infinite;
+            box-shadow: 0px 0px 1px 0px #508fb9;
+            opacity: 0;
+        }
+
+        .small {
+            width: 300px;
+            height: 300px;
+            opacity: 0.2;
+        }
+
+        .medium {
+            width: 400px;
+            height: 400px;
+            opacity: 0.5;
+        }
+
+        .large {
+            width: 600px;
+            height: 600px;
+            opacity: 0.7;
+        }
+
+        .xlarge {
+            width: 800px;
+            height: 800px;
+            opacity: 0.8;
+        }
+
+        .xxlarge {
+            width: 1000px;
+            height: 1000px;
+            opacity: 0.9;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(0.8);
+            }
+        }
+    </style>
+</head>
+<body>
+<script>
+    const sizes = ["small", "medium", "large", "xlarge", "xxlarge"];
+
+    setInterval(function() {
+        const circle = document.createElement("div");
+        const size = sizes[Math.floor(Math.random() * sizes.length)];
+        circle.className = "circle " + size;
+        circle.style.left = Math.random() * window.innerWidth + "px";
+        circle.style.top = Math.random() * window.innerHeight + "px";
+        document.body.appendChild(circle);
+
+        setTimeout(function() {
+            circle.remove();
+        }, 3000);
+    }, 500);
+</script>
+</body>
+</html>

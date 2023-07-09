@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GetAllUsers</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>GetAllUsers</h1>
+<table id="usersTable">
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Phone</th>
+        <th>TC</th>
+        <th>Date of Birth</th>
+    </tr>
+</table>
+
+<script>
+    function getUsers() {
+        $.ajax({
+            url: "http://localhost:8080/get-all",
+            type: "GET",
+            success: function(users) {
+                populateUsersTable(users);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    function populateUsersTable(users) {
+        var table = $("#usersTable");
+
+        users.forEach(function(user) {
+            var row = $("<tr>");
+
+            var idCell = $("<td>").text(user.id);
+            row.append(idCell);
+
+            var firstNameCell = $("<td>").text(user.firstName);
+            row.append(firstNameCell);
+
+            var lastNameCell = $("<td>").text(user.lastName);
+            row.append(lastNameCell);
+
+            var emailCell = $("<td>").text(user.email);
+            row.append(emailCell);
+
+            var passwordCell = $("<td>").text(user.password);
+            row.append(passwordCell);
+
+            var phoneCell = $("<td>").text(user.phone);
+            row.append(phoneCell);
+
+            var tcCell = $("<td>").text(user.tc);
+            row.append(tcCell);
+
+            var dobCell = $("<td>").text(user.dob);
+            row.append(dobCell);
+
+            table.append(row);
+        });
+    }
+
+    $(document).ready(function() {
+        getUsers();
+    });
+</script>
+</body>
+</html>

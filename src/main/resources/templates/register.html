@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol</title>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!--FontAwesome CSS-->
+    <script src="https://kit.fontawesome.com/43babdb10d.js" crossorigin="anonymous"></script>
+
+    <!--Stylesheet-->
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+<div class="register-container">
+    <div id="alert"></div>
+    <iframe src="/background.html"></iframe>
+    <div class="register-form">
+        <h2 class="text-center mb-3">Kayıt Ol</h2>
+        <div class="text-center mb-1 reg_btns">
+            <a href="#" id="linkedin" class="buttons btn btn-outline-primary text-start mb-2 ms-2 me-2"><i class="fab fa-linkedin"></i></a>
+            <a href="#" id="github" class="buttons btn btn-outline-dark text-start mb-2 ms-2 me-2"><i class="fab fa-github"></i></a>
+            <a href="#" id="google" class="buttons btn btn-outline-danger text-start mb-2 ms-2 me-2"><i class="fab fa-google"></i></a>
+        </div>
+        <form id="registerForm">
+            <div class="error"></div>
+            <div class="form-floating mb-3">
+                <input name="name" type="text" class="form-control" id="name" placeholder="Ad" maxlength="50" required>
+                <label for="name">Ad</label>
+                <div class="invalid-feedback">Lütfen geçerli bir ad girin.</div>
+            </div>
+            <div class="error"></div>
+            <div class="form-floating mb-3">
+                <input name="surname" type="text" class="form-control" id="surname" placeholder="Soyad" maxlength="50" required>
+                <label for="surname">Soyad</label>
+                <div class="invalid-feedback">Lütfen geçerli bir soyad girin.</div>
+            </div>
+            <div class="error"></div>
+            <div class="form-floating mb-3">
+                <input name="tc" type="text" class="form-control" id="tc" placeholder="TC Kimlik Numarası" pattern="[0-9]{11}" maxlength="11" required>
+                <label for="tc">TC Kimlik Numarası</label>
+                <div class="invalid-feedback">Lütfen geçerli 11 haneli bir TC Kimlik numarası girin.</div>
+            </div>
+            <div class="error"></div>
+            <div class="form-floating mb-3">
+                <input name="dob" type="date" class="form-control" id="dob" placeholder="Doğum Tarihi" required>
+                <label for="dob">Doğum Tarihi</label>
+            </div>
+            <div class="error"></div>
+            <div class="form-floating mt-3 mb-3">
+                <input name="email" type="email" class="form-control" id="email" placeholder="E-posta" required>
+                <label for="email">E-posta</label>
+                <div class="invalid-feedback">Lütfen geçerli bir e-posta adresi girin.</div>
+            </div>
+            <div class="error"></div>
+            <div class="form-floating mb-3">
+                <input name="phone" type="tel" class="form-control" id="phone" placeholder="Telefon Numarası" pattern="[0-9]{10,11}" maxlength="11" required>
+                <label for="phone">Telefon Numarası</label>
+                <div class="invalid-feedback">Lütfen geçerli bir telefon numarası girin.</div>
+            </div>
+            <div class="error"></div>
+            <div class="form-floating mb-3">
+                <input name="password" type="password" class="form-control" id="password" placeholder="Parola" required>
+                <label for="password">Parola</label>
+            </div>
+            <div class="error"></div>
+            <div class="form-floating mb-3">
+                <input name="password2" type="password" class="form-control" id="password2" placeholder="Parolayı Onayla" required>
+                <label for="password2">Parolayı Onayla</label>
+                <div class="invalid-feedback">Parolalar eşleşmiyor.</div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Hesap Oluştur</button>
+            <p class="text-center mt-3">Zaten bir hesabınız var mı? <a id="login_link" href="/login">Giriş Yap</a></p>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#registerForm").submit(function (event) {
+            event.preventDefault();
+            const firstName = $("#name").val();
+            const lastName = $("#surname").val();
+            const email = $("#email").val();
+            const password = $("#password").val();
+            const password2 = $("#password2").val();
+            const phone = $("#phone").val();
+            const tc = $("#tc").val();
+            const dob = $("#dob").val();
+
+            if (password !== password2) {
+                alert('Parolalar eşleşmiyor!');
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: "/create-user",
+                data: JSON.stringify({ firstName, lastName, email, password, phone, tc, dob }),
+                contentType: "application/json",
+                success: function (data) {
+                    if (data) {
+                        alert("Kayıt işlemi başarılı. Lütfen giriş yapın.");
+                        $("#registerForm")[0].reset(); // Reset form is successful
+                        window.location.href = "/login#";
+                    }
+                    else
+                        alert('Kayıt işlemi başarısız oldu. Lütfen tekrar deneyin.');
+                },
+            });
+        });
+    });
+</script>
+<!--Bootstrap JS-->
+<script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
